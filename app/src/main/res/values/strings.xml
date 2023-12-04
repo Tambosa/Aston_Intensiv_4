@@ -13,4 +13,5 @@
     <string name="name">Name</string>
     <string name="phone_number">Phone number</string>
     <string name="save">Save</string>
+    <string name="profile_image">Profile image</string>
 </resources>
