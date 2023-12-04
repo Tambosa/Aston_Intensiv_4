@@ -10,6 +10,7 @@ import com.example.aston_intensiv_4.R
 import com.example.aston_intensiv_4.Utils
 import com.example.aston_intensiv_4.domain.User
 import com.example.aston_intensiv_4.domain.UserRecyclerItem
+import com.example.aston_intensiv_4.second_presentation.UserDetailsFragment.Companion.USER_DETAILS_FRAGMENT_TAG
 import com.example.aston_intensiv_4.second_presentation.adapters.UserListCompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,11 +23,32 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
 
     companion object {
         const val USER_LIST_FRAGMENT_TAG = "USER_LIST_FRAGMENT_TAG"
+        const val FRAGMENT_RESULT_KEY_UPDATE_USER = "FRAGMENT_RESULT_KEY_UPDATE_USER"
+        const val USER_RESULT_ID = "USER_RESULT_ID"
+        const val USER_RESULT_NAME = "USER_RESULT_NAME"
+        const val USER_RESULT_SURNAME = "USER_RESULT_SURNAME"
+        const val USER_RESULT_PHONE_NUMBER = "USER_RESULT_PHONE_NUMBER"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[UserListViewModel::class.java]
+        initListeners()
+    }
+
+    private fun initListeners() {
+        parentFragmentManager.setFragmentResultListener(
+            FRAGMENT_RESULT_KEY_UPDATE_USER, this
+        ) { _, bundle ->
+            val id = bundle.getInt(USER_RESULT_ID)
+            val name = bundle.getString(USER_RESULT_NAME)
+            val surname = bundle.getString(USER_RESULT_SURNAME)
+            val phoneNumber = bundle.getString(USER_RESULT_PHONE_NUMBER)
+
+            if (name != null && surname != null && phoneNumber != null) {
+                viewModel.updateUser(User(id, name, surname, phoneNumber))
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,6 +83,14 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
     }
 
     private fun onUserClick(item: User) {
-
+        parentFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_container,
+                UserDetailsFragment.newInstance(item),
+                USER_DETAILS_FRAGMENT_TAG,
+            )
+            .addToBackStack(USER_DETAILS_FRAGMENT_TAG)
+            .setReorderingAllowed(true)
+            .commit()
     }
 }
