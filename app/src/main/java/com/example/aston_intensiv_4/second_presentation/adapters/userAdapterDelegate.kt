@@ -2,6 +2,7 @@ package com.example.aston_intensiv_4.second_presentation.adapters
 
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.example.aston_intensiv_4.R
 import com.example.aston_intensiv_4.databinding.UserItemBinding
 import com.example.aston_intensiv_4.domain.User
 import com.example.aston_intensiv_4.domain.UserRecyclerItem
@@ -18,7 +19,7 @@ fun userAdapterDelegate(
             binding.userName.text = item.name
             binding.userSurname.text = item.surname
             binding.userPhoneNumber.text = item.phoneNumber
-            binding.userImage.load(item.imageUrl) {
+            binding.userImage.load(item.imageUri ?: R.drawable.person_placeholder) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }

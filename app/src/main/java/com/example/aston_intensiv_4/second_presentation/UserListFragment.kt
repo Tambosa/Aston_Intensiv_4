@@ -1,6 +1,8 @@
 package com.example.aston_intensiv_4.second_presentation
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,10 +26,7 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
     companion object {
         const val USER_LIST_FRAGMENT_TAG = "USER_LIST_FRAGMENT_TAG"
         const val FRAGMENT_RESULT_KEY_UPDATE_USER = "FRAGMENT_RESULT_KEY_UPDATE_USER"
-        const val USER_RESULT_ID = "USER_RESULT_ID"
-        const val USER_RESULT_NAME = "USER_RESULT_NAME"
-        const val USER_RESULT_SURNAME = "USER_RESULT_SURNAME"
-        const val USER_RESULT_PHONE_NUMBER = "USER_RESULT_PHONE_NUMBER"
+        const val USER_BUNDLE_KEY = "USER_BUNDLE_KEY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +39,14 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
         parentFragmentManager.setFragmentResultListener(
             FRAGMENT_RESULT_KEY_UPDATE_USER, this
         ) { _, bundle ->
-            val id = bundle.getInt(USER_RESULT_ID)
-            val name = bundle.getString(USER_RESULT_NAME)
-            val surname = bundle.getString(USER_RESULT_SURNAME)
-            val phoneNumber = bundle.getString(USER_RESULT_PHONE_NUMBER)
-
-            if (name != null && surname != null && phoneNumber != null) {
-                viewModel.updateUser(User(id, name, surname, phoneNumber))
+            val user: User? = if (Build.VERSION.SDK_INT >= 33) {
+                bundle.getParcelable(USER_BUNDLE_KEY, User::class.java)
+            } else {
+                bundle.getParcelable(USER_BUNDLE_KEY)
+            }
+            if (user != null) {
+                Log.d("@@@", "initListeners: $user")
+                viewModel.updateUser(user)
             }
         }
     }
