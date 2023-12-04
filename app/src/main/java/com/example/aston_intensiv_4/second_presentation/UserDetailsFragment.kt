@@ -1,6 +1,5 @@
 package com.example.aston_intensiv_4.second_presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +19,13 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            user = if (Build.VERSION.SDK_INT >= 33) {
-                it.getParcelable(USER, User::class.java)
-            } else {
-                it.getParcelable(USER)
+            val id = it.getInt(UserListFragment.USER_RESULT_ID)
+            val name = it.getString(UserListFragment.USER_RESULT_NAME)
+            val surname = it.getString(UserListFragment.USER_RESULT_SURNAME)
+            val phoneNumber = it.getString(UserListFragment.USER_RESULT_PHONE_NUMBER)
+
+            if (name != null && surname != null && phoneNumber != null) {
+                user = User(id, name, surname, phoneNumber)
             }
         }
     }
@@ -67,10 +69,14 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
 
     companion object {
         fun newInstance(user: User) = UserDetailsFragment().apply {
-            arguments = bundleOf(USER to user)
+            arguments = bundleOf(
+                UserListFragment.USER_RESULT_ID to user.id,
+                UserListFragment.USER_RESULT_NAME to user.name,
+                UserListFragment.USER_RESULT_SURNAME to user.surname,
+                UserListFragment.USER_RESULT_PHONE_NUMBER to user.phoneNumber,
+            )
         }
 
-        private const val USER = "USER"
         const val USER_DETAILS_FRAGMENT_TAG = "USER_DETAILS_FRAGMENT_TAG"
     }
 }
