@@ -1,7 +1,6 @@
 package com.example.aston_intensiv_4.second_presentation
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import coil.transform.CircleCropTransformation
 import com.example.aston_intensiv_4.R
 import com.example.aston_intensiv_4.databinding.FragmentUserDetailsBinding
 import com.example.aston_intensiv_4.domain.User
+import com.example.aston_intensiv_4.parcelable
 import com.example.aston_intensiv_4.second_presentation.UserListFragment.Companion.USER_BUNDLE_KEY
 
 
@@ -26,7 +26,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     private val photoPickerLauncher =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             uri?.let {
-                user?.let{
+                user?.let {
                     user = it.copy(imageUri = uri)
                     saveUserToArgs(user!!)
                 }
@@ -37,11 +37,7 @@ class UserDetailsFragment : Fragment(R.layout.fragment_user_details) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            val user = if (Build.VERSION.SDK_INT >= 33) {
-                it.getParcelable(USER_BUNDLE_KEY, User::class.java)
-            } else {
-                it.getParcelable(USER_BUNDLE_KEY)
-            }
+            val user = it.parcelable<User>(USER_BUNDLE_KEY)
             if (user != null) {
                 this.user = user
             }

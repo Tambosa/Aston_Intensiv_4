@@ -1,8 +1,6 @@
 package com.example.aston_intensiv_4.second_presentation
 
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +10,7 @@ import com.example.aston_intensiv_4.R
 import com.example.aston_intensiv_4.Utils
 import com.example.aston_intensiv_4.domain.User
 import com.example.aston_intensiv_4.domain.UserRecyclerItem
+import com.example.aston_intensiv_4.parcelable
 import com.example.aston_intensiv_4.second_presentation.UserDetailsFragment.Companion.USER_DETAILS_FRAGMENT_TAG
 import com.example.aston_intensiv_4.second_presentation.adapters.UserListCompositeAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,13 +38,8 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
         parentFragmentManager.setFragmentResultListener(
             FRAGMENT_RESULT_KEY_UPDATE_USER, this
         ) { _, bundle ->
-            val user: User? = if (Build.VERSION.SDK_INT >= 33) {
-                bundle.getParcelable(USER_BUNDLE_KEY, User::class.java)
-            } else {
-                bundle.getParcelable(USER_BUNDLE_KEY)
-            }
+            val user = bundle.parcelable<User>(USER_BUNDLE_KEY)
             if (user != null) {
-                Log.d("@@@", "initListeners: $user")
                 viewModel.updateUser(user)
             }
         }

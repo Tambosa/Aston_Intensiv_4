@@ -30,6 +30,7 @@ class UserListViewModel @Inject constructor(private val repo: UserRepo) : ViewMo
         _state.value = _state.value?.apply {
             this.remove(find { (it as User).id == updatedUser.id })
             this.add(updatedUser)
+            sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { (it as User).name })
         }
     }
 }
