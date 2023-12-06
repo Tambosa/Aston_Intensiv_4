@@ -1,7 +1,11 @@
 package com.example.aston_intensiv_4
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.example.aston_intensiv_4.di.AppComponent
+import com.example.aston_intensiv_4.di.DaggerAppComponent
 
-@HiltAndroidApp
-class App : Application()
+class App : Application() {
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.create()
+    }
+}

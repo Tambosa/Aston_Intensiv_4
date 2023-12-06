@@ -1,8 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("kapt")
-    id ("kotlin-parcelize")
-    id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -49,8 +48,8 @@ dependencies {
 
     implementation("io.coil-kt:coil:2.5.0")
 
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation ("com.google.dagger:dagger-android:2.48.1")
+    kapt ("com.google.dagger:dagger-compiler:2.48.1")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

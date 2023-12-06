@@ -5,9 +5,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aston_intensiv_4.first_presentation.AFragment
 import com.example.aston_intensiv_4.second_presentation.UserListFragment
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

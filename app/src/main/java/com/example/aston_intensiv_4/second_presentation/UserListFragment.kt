@@ -1,5 +1,6 @@
 package com.example.aston_intensiv_4.second_presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,16 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aston_intensiv_4.R
 import com.example.aston_intensiv_4.Utils
+import com.example.aston_intensiv_4.di.utils.ViewModelFactory
 import com.example.aston_intensiv_4.domain.User
 import com.example.aston_intensiv_4.domain.UserRecyclerItem
+import com.example.aston_intensiv_4.getAppComponent
 import com.example.aston_intensiv_4.parcelable
 import com.example.aston_intensiv_4.second_presentation.UserDetailsFragment.Companion.USER_DETAILS_FRAGMENT_TAG
 import com.example.aston_intensiv_4.second_presentation.adapters.UserListCompositeAdapter
-import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-@AndroidEntryPoint
 class UserListFragment : Fragment(R.layout.fragment_user_list) {
-    private lateinit var viewModel: UserListViewModel
+    @Inject
+    lateinit var appViewModelFactory: ViewModelFactory
+    private val viewModel: UserListViewModel by lazy {
+        ViewModelProvider(this, appViewModelFactory)[UserListViewModel::class.java]
+    }
     private val userListAdapter = UserListCompositeAdapter(
         onUserClick = { item -> onUserClick(item) }
     )
@@ -28,9 +34,13 @@ class UserListFragment : Fragment(R.layout.fragment_user_list) {
         const val USER_BUNDLE_KEY = "USER_BUNDLE_KEY"
     }
 
+    override fun onAttach(context: Context) {
+        getAppComponent().inject(this)
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[UserListViewModel::class.java]
         initListeners()
     }
 

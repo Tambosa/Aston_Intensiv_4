@@ -7,10 +7,8 @@ import androidx.lifecycle.map
 import com.example.aston_intensiv_4.data.UserRepo
 import com.example.aston_intensiv_4.domain.User
 import com.example.aston_intensiv_4.domain.UserRecyclerItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
 class UserListViewModel @Inject constructor(private val repo: UserRepo) : ViewModel() {
     private val _state = MutableLiveData<MutableList<UserRecyclerItem>>()
     val state: LiveData<List<UserRecyclerItem>> = _state.map {
